@@ -1,0 +1,107 @@
+package com.example.resto.Controllers;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.resto.Models.Category;
+import com.example.resto.Models.Dish;
+import com.example.resto.Models.extramodals.frontenddish;
+import com.example.resto.Repository.CategoryReposetory;
+import com.example.resto.Repository.DishRepository;
+
+@RestController
+@RequestMapping("manager")
+public class Manager {
+	
+	@Autowired
+	private CategoryReposetory categoryrepo;
+	
+	@Autowired
+	private DishRepository dishrepo;
+	
+	
+	//categories controllers
+	 List<Category> al =new ArrayList<Category>();
+	 
+	 @GetMapping("/categories/get")
+	 public List<Category> getCategories(){
+
+		 al=categoryrepo.findAll();
+		 return al;
+	 }
+	 
+	 @PostMapping("/categories/remove")
+	 public String removeCategories(@RequestBody Category cat){
+		 Category existing= categoryrepo.findBycategoryName(cat.getCategoryName());
+		 if(existing!=null) {
+			 categoryrepo.findBycategoryName(cat.getCategoryName());
+			 return "deleted";
+		 }
+		 return "category not found";
+		 
+	 }
+	 
+	 @PostMapping("/categories/add")
+	 public Category saveCategory(@RequestBody Category cat) {
+		  
+		 Category existing= categoryrepo.findBycategoryName(cat.getCategoryName());
+		 if(existing!=null) {
+			 return null;
+		 }
+		 return categoryrepo.save(cat);
+	 }
+
+	 //dish controllers
+	 List<Dish> dl=new ArrayList<Dish>();
+	 
+	 @GetMapping("dishes/get")
+	 public List<Dish> getAlldishes() {
+		 dl=(List<Dish>) dishrepo.findAll();
+		 return dl;
+	 }
+	 
+	 @GetMapping("dish/get")
+	 public Dish getdishe(@RequestParam("dishName") String fd) {
+		 Dish dish=dishrepo.findByname(fd);
+		 return dish;
+	 }
+	 
+	 @PostMapping("dish/add")
+	 public String addDish(@RequestBody frontenddish fd) {
+		
+		Dish dishexistsalready=dishrepo.findByname(fd.getName());
+		  if(dishexistsalready==null) {
+			  
+			  Category categoryexistsalready=categoryrepo.findBycategoryName(fd.getCategoryname());
+			  if(categoryexistsalready==null) {
+				  
+				  return "no such category exists";
+			  }
+			  Dish newdish=new Dish(fd.getName(),fd.getPrice(),categoryexistsalready,fd.isVeg());
+			  dishrepo.save(newdish);
+			  return "Dish Added";
+		  }
+		 return "Dish Already Exists";
+	 }
+
+	 @PostMapping("dish/remove")
+	 public String deleteDish(@RequestBody frontenddish fd) {
+		 Dish dishexistsalready=dishrepo.findByname(fd.getName());
+		 if(dishexistsalready==null){return "dish doest exist";}
+		 dishrepo.delete(dishexistsalready);
+		 return "deleted";
+	 }
+	 
+}
