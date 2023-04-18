@@ -20,7 +20,36 @@ public class Dish {
 	private long price;
 	private boolean veg;
 	private double rating;
+	private long time;
 	
+	
+	
+	public Dish(long id, String name, long price, boolean veg, double rating, long time, Category category) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.price = price;
+		this.veg = veg;
+		this.rating = rating;
+		this.time = time;
+		this.category = category;
+	}
+	
+	public Dish(String name, long price, boolean veg, double rating, long time, Category category) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.veg = veg;
+		this.rating = rating;
+		this.time = time;
+		this.category = category;
+	}
+	public long getTime() {
+		return time;
+	}
+	public void setTime(long time) {
+		this.time = time;
+	}
 	public Dish(String name, long price, boolean veg, double rating, Category category) {
 		super();
 		this.name = name;

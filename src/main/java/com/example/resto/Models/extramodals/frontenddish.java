@@ -8,7 +8,33 @@ public class frontenddish {
 	private long price;
 	private String categoryName;
 	private boolean veg;
+	private double rating;
+	private long time;
+	public frontenddish(String name, long price, String categoryName, boolean veg, double rating, long time) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.categoryName = categoryName;
+		this.veg = veg;
+		this.rating = rating;
+		this.time = time;
+	}
+
 	
+	
+	
+	public double getRating() {
+		return rating;
+	}
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+	public long getTime() {
+		return time;
+	}
+	public void setTime(long time) {
+		this.time = time;
+	}
 	public String getCategoryName() {
 		return categoryName;
 	}
