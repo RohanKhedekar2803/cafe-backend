@@ -18,6 +18,8 @@ public interface DishRepository extends CrudRepository<Dish, Long>{
 	List<Dish> findBycategory(Category category);
 
 	List<Dish> findByveg(boolean b);
+	
+	Dish FindById(long id);
 
 	
 
